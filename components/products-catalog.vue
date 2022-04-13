@@ -50,6 +50,12 @@ export default {
   overflow-y: auto;
 }
 
+@media screen and (max-width: 740px) {
+  .list-wrapper {
+    justify-content: center;
+  }
+}
+
 h3 {
   margin: 0;
   padding: 20px;

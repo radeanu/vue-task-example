@@ -1,46 +1,26 @@
 <template>
   <div class="product-wrapper">
-    <img :src="getProductImg" :alt="product.title" />
+    <img class="product-image" :src="getProductImg" :alt="product.title" />
 
-    <div class="d-flex flex-column">
+    <div class="product-content">
       <div class="product-description">
         <span>{{ product.title }}</span>
-        <span>{{ brandTitle }}</span>
-        <span>${{ product.regular_price.value }}</span>
+        <small>{{ brandTitle }}</small>
+        <small>${{ product.regular_price.value }}</small>
 
-        <div v-if="product.type === 'configurable'" class="config-options">
-          <div
-            v-for="(config, i) in product.configurable_options"
-            :key="'opt' + i"
-          >
-            <div class="product-config-options-list">
-              <div v-for="(option, k) in config.values" :key="'val' + k">
-                <div
-                  v-if="config.attribute_code === 'color'"
-                  class="product-config-option"
-                  :style="{
-                    backgroundColor: option.value
-                  }"
-                />
-
-                <div
-                  v-if="config.attribute_code === 'size'"
-                  class="product-config-option"
-                >
-                  {{ option.label }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProductConfigurations
+          v-if="product.type === 'configurable'"
+          :product="product"
+          @update-product="updateProduct"
+        />
       </div>
 
       <div class="product-actions">
         <button v-if="isInCart" class="btn btn-secondary" @click="openCart">
-          In cart
+          ✔
         </button>
         <button v-else class="btn btn-primary" @click="addProductToCart">
-          + Add to cart
+          + Add
         </button>
       </div>
     </div>
@@ -48,7 +28,12 @@
 </template>
 
 <script>
+import ProductConfigurations from './product-configurations.vue';
+
 export default {
+  components: {
+    ProductConfigurations
+  },
   props: {
     product: {
       type: Object,
@@ -56,7 +41,12 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      productVariant: {
+        variant_id: '',
+        variant_image: '/images/conf/default.png'
+      }
+    };
   },
   computed: {
     brandTitle() {
@@ -65,20 +55,48 @@ export default {
       ).title;
     },
     getProductImg() {
-      return require(`../assets${this.product.image}`);
+      const imagePath =
+        this.product.type === 'configurable'
+          ? this.productVariant.variant_image
+          : this.product.image;
+
+      return require(`../assets${imagePath}`);
     },
-    isInCart() {
-      return this.$store.getters['cart/GET_ITEMS'].some(
+    sameProductsInCarts() {
+      return this.$store.getters['cart/GET_ITEMS'].filter(
         (p) => p.id === this.product.id
       );
+    },
+    isInCart() {
+      const itemExists = this.$store.getters['cart/GET_ITEMS'].some(
+        (p) => p.id === this.product.id
+      );
+
+      if (this.product.type !== 'configurable') {
+        return itemExists;
+      }
+
+      if (itemExists) {
+        return this.sameProductsInCarts.some(
+          (p) => p.selectedVariant.variant_id === this.productVariant.variant_id
+        );
+      }
+
+      return false;
     }
   },
   methods: {
     addProductToCart() {
-      this.$store.commit('cart/ADD_ITEM_TO_CART', this.product.id);
+      this.$store.commit('cart/ADD_ITEM_TO_CART', {
+        id: this.product.id,
+        selectedVariant: this.productVariant
+      });
     },
     openCart() {
       this.$router.push({ path: '/shopping-cart' });
+    },
+    updateProduct(variant) {
+      this.productVariant = variant;
     }
   }
 };
@@ -100,34 +118,14 @@ export default {
   margin-top: 5px;
 }
 
-.config-options {
-  display: flex;
-  flex-direction: column;
-}
-
-.product-config-option {
-  cursor: pointer;
-  border: 2px solid black;
-  border-radius: 2px;
-  width: 24px;
-  height: 20px;
-  text-align: center;
-  line-height: 20px;
-  margin-right: 5px;
-  margin-top: 5px;
-
-  &:hover {
-    border: 2px solid rgb(243, 141, 45);
-  }
-}
-
-.product-config-options-list {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-img {
+.product-image {
   width: 180px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+}
+
+.product-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 </style>

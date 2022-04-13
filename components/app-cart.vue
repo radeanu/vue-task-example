@@ -51,7 +51,7 @@
 
                     <button
                       class="btn-default"
-                      @click="removeProductFromCart(product.id)"
+                      @click="removeProductFromCart(product)"
                     >
                       <img
                         class="remove-icon"
@@ -83,10 +83,7 @@
             </td>
 
             <td class="md">
-              <button
-                class="btn-default"
-                @click="removeProductFromCart(product.id)"
-              >
+              <button class="btn-default" @click="removeProductFromCart(i)">
                 <img
                   class="remove-icon"
                   src="../assets/images/delete-icon.png"
@@ -146,8 +143,8 @@ export default {
         count: +event.target.value
       });
     },
-    removeProductFromCart(productId) {
-      this.$store.commit('cart/REMOVE_ITEM_FROM_CART', productId);
+    removeProductFromCart(index) {
+      this.$store.commit('cart/REMOVE_ITEM_FROM_CART', index);
     },
     calculatePrice(price, count) {
       return Math.round((price * count + Number.EPSILON) * 100) / 100;
@@ -241,6 +238,10 @@ td {
 
   .sm {
     display: flex;
+  }
+
+  .product-params {
+    padding-left: 0;
   }
 }
 
