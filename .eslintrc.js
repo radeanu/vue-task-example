@@ -50,7 +50,6 @@ module.exports = {
         ignores: ['default']
       }
     ],
-    'vue/component-name-in-template-casing': 'error',
     'no-unused-vars': 'warn',
     'vue/valid-v-html': 'warn',
     'vue/attributes-order': 'warn',
@@ -77,7 +76,6 @@ module.exports = {
     'vue/no-restricted-syntax': 'warn',
     'vue/no-static-inline-styles': 'warn',
     'vue/no-unsupported-features': 'warn',
-    'vue/object-curly-spacing': 'warn',
     'vue/padding-line-between-blocks': 'warn',
     'vue/script-indent': 'off',
     'vue/space-infix-ops': 'warn',

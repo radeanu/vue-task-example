@@ -64,9 +64,6 @@ export default {
     }
   },
   methods: {
-    addProductToCart() {
-      this.$store.commit('cart/ADD_ITEM_TO_CART', this.product.id);
-    },
     openCart() {
       this.$router.push({ path: '/shopping-cart' });
     }

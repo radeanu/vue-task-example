@@ -1,7 +1,10 @@
 export default {
+  server: {
+    host: '0.0.0.0' // default: localhost
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'nuxt-task',
+    title: 'nuxt-example',
     htmlAttrs: {
       lang: 'en'
     },
