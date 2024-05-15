@@ -8,10 +8,10 @@
         <thead>
           <tr>
             <th class="col-large"><span class="md">Item</span></th>
-            <th class="col-standart md">Price</th>
-            <th class="col-standart md">Qty</th>
-            <th class="col-standart md">Total</th>
-            <th class="col-small md"></th>
+            <th class="col-standard md">Price</th>
+            <th class="col-standard md">Qty</th>
+            <th class="col-standard md">Total</th>
+            <th class="col-small md" />
           </tr>
         </thead>
 
@@ -103,54 +103,44 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue';
 import CartProductWidget from './cart-product-widget.vue';
 
-export default {
-  components: {
-    CartProductWidget
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    cartItems() {
-      return this.$store.getters['cart/GET_ITEMS'];
-    },
-    cartProducts() {
-      return this.cartItems.map((item) => {
-        const product = this.$store.getters['products/GET_PRODUCT_BY_ID'](
-          item.id
-        );
+const cartItems = computed(() => this.$store.getters['cart/GET_ITEMS']);
 
-        return {
-          ...item,
-          ...product
-        };
-      });
-    },
-    calculateSubtotal() {
-      return this.cartProducts.reduce((acc, curr) => {
-        const total = this.calculatePrice(curr.regular_price.value, curr.count);
-        return Math.round((acc + total + Number.EPSILON) * 100) / 100;
-      }, 0);
-    }
-  },
-  methods: {
-    handleProductCount(event, productId) {
-      this.$store.commit('cart/UPDATE_ITEM_COUNT', {
-        itemId: productId,
-        count: +event.target.value
-      });
-    },
-    removeProductFromCart(index) {
-      this.$store.commit('cart/REMOVE_ITEM_FROM_CART', index);
-    },
-    calculatePrice(price, count) {
-      return Math.round((price * count + Number.EPSILON) * 100) / 100;
-    }
-  }
-};
+const cartProducts = computed(() => {
+  return this.cartItems.map((item) => {
+    const product = this.$store.getters['products/GET_PRODUCT_BY_ID'](item.id);
+
+    return {
+      ...item,
+      ...product
+    };
+  });
+});
+
+const calculateSubtotal = computed(() => {
+  return this.cartProducts.reduce((acc, curr) => {
+    const total = this.calculatePrice(curr.regular_price.value, curr.count);
+    return Math.round((acc + total + Number.EPSILON) * 100) / 100;
+  }, 0);
+});
+
+function handleProductCount(event, productId) {
+  this.$store.commit('cart/UPDATE_ITEM_COUNT', {
+    itemId: productId,
+    count: +event.target.value
+  });
+}
+
+function removeProductFromCart(index) {
+  this.$store.commit('cart/REMOVE_ITEM_FROM_CART', index);
+}
+
+function calculatePrice(price, count) {
+  return Math.round((price * count + Number.EPSILON) * 100) / 100;
+}
 </script>
 
 <style lang="scss" scoped>
@@ -169,7 +159,7 @@ export default {
   overflow: auto;
 }
 
-.col-standart {
+.col-standard {
   width: 120px;
 }
 

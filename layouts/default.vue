@@ -1,28 +1,12 @@
 <template>
   <div class="app-wrapper">
     <AppHeader />
-    <Nuxt />
+    <slot />
   </div>
 </template>
 
-<style lang="scss">
-#__nuxt {
-  font-family: cursive, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
+<script setup lang="ts">
+import AppHeader from '@/components/AppHeader.vue';
+</script>
 
-#__nuxt,
-#__layout {
-  height: 100%;
-  width: 100%;
-}
-
-.app-wrapper {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-</style>
+<style lang="scss"></style>

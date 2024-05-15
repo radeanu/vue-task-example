@@ -4,37 +4,23 @@
     :class="[isCartRoute ? 'justify-center' : 'justify-between']"
   >
     <NuxtLink to="/">
-      <img src="../assets/images/logo.png" alt="logo" />
+      <img src="/img/logo.png" alt="logo" />
     </NuxtLink>
 
     <NuxtLink v-if="!isCartRoute" class="cart-link" to="/shopping-cart">
       <span class="cart-count-badge">{{ cartItemsCount }}</span>
-      <img
-        id="cart-icon"
-        src="../assets/images/cart-icon.png"
-        alt="cart"
-        height="32"
-      />
+      <img id="cart-icon" src="/img/cart-icon.png" alt="cart" height="32" />
     </NuxtLink>
   </div>
 </template>
 
-<script>
-export default {
-  computed: {
-    cartItemsCount() {
-      return this.$store.getters['cart/COUNT_ITEMS'];
-    },
-    isCartRoute() {
-      return this.$route.name === 'shopping-cart';
-    }
-  },
-  methods: {
-    openCart() {
-      this.$router.push({ path: '/shopping-cart' });
-    }
-  }
-};
+<script setup>
+import { computed } from 'vue';
+
+const route = useRoute();
+
+const cartItemsCount = useState('cartItemsCount', () => 0);
+const isCartRoute = computed(() => route.name === 'shopping-cart');
 </script>
 
 <style scoped lang="scss">

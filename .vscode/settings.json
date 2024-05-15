@@ -11,7 +11,11 @@
     "titleBar.activeBackground": "#6f1f52",
     "titleBar.activeForeground": "#e7e7e7",
     "titleBar.inactiveBackground": "#6f1f5299",
-    "titleBar.inactiveForeground": "#e7e7e799"
+    "titleBar.inactiveForeground": "#e7e7e799",
+    "commandCenter.border": "#e7e7e799"
   },
-  "peacock.color": "#6f1f52"
+  "peacock.color": "#6f1f52",
+  "eslint.experimental.useFlatConfig": true,
+  "editor.tabSize": 2,
+  "editor.indentSize": 2
 }
