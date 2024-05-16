@@ -1,5 +1,5 @@
 <template>
-  <div class="app-wrapper">
+  <div class="layout">
     <AppHeader />
     <slot />
   </div>
@@ -9,4 +9,4 @@
 import AppHeader from '@/components/AppHeader.vue';
 </script>
 
-<style lang="scss"></style>
+<style scoped lang="scss"></style>
