@@ -1,12 +1,5 @@
 <template>
-  <AppCatalog />
+  <div>Index page</div>
 </template>
 
-<script>
-import AppCatalog from '~/components/app-catalog.vue';
-
-export default {
-  name: 'IndexPage',
-  components: { AppCatalog }
-};
-</script>
+<script setup lang="ts"></script>
