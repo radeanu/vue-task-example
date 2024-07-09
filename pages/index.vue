@@ -1,10 +1,5 @@
 <template>
-  <div>
-    <div>Catalog</div>
-    <div>Product 1</div>
-  </div>
+  <div>Index page</div>
 </template>
 
-<script setup lang="ts">
-// import AppCatalog from '@/components/AppCatalog.vue';
-</script>
+<script setup lang="ts"></script>

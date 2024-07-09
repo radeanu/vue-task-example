@@ -1,36 +1,24 @@
 <template>
   <div class="products-wrapper">
-    <h3>Catalog</h3>
+    <h3 class="title">Catalog</h3>
 
-    <div class="list-wrapper">
-      <template v-if="products.length">
-        <ProductWidget
-          v-for="(product, i) in products"
-          :key="'pro' + i"
-          :product="product"
-        />
-      </template>
-      <small v-else>No products found...</small>
+    <div v-if="products?.length" class="list-wrapper">
+      <ProductCard
+        v-for="(product, i) in products"
+        :key="'pro' + i"
+        :product="product"
+      />
     </div>
+
+    <small v-else>No products found...</small>
   </div>
 </template>
 
-<script>
-import ProductWidget from './product-widget.vue';
+<script setup lang="ts">
+import ProductCard from './ProductCard.vue';
+import { fetchProducts } from '@/common/services.ts';
 
-export default {
-  components: {
-    ProductWidget
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    products() {
-      return this.$store.getters['products/GET_PRODUCTS_TO_DISPLAY'] ?? [];
-    }
-  }
-};
+const { data: products } = await useAsyncData('products', fetchProducts);
 </script>
 
 <style scoped lang="scss">
@@ -50,15 +38,17 @@ export default {
   overflow-y: auto;
 }
 
+.title {
+  margin: 0;
+  padding: 20px;
+  padding-bottom: 10px;
+  font-size: larger;
+  font-weight: bold;
+}
+
 @media screen and (max-width: 740px) {
   .list-wrapper {
     justify-content: center;
   }
-}
-
-h3 {
-  margin: 0;
-  padding: 20px;
-  padding-bottom: 10px;
 }
 </style>

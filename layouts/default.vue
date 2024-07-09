@@ -9,4 +9,16 @@
 import AppHeader from '@/components/AppHeader.vue';
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.layout {
+  width: 100vw;
+  height: 100vh;
+
+  width: 100dvw;
+  height: 100dvh;
+
+  margin: 0;
+  padding-inline: var(--layout-pad-x);
+  overflow: auto;
+}
+</style>

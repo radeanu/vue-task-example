@@ -23,86 +23,78 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    product: {
-      type: Object,
-      default: () => ({})
-    }
-  },
-  data() {
-    return {
-      productFilters: [],
-      colorHexRegex: /#[0-9a-f]{6}|#[0-9a-f]{3}/gi
-    };
-  },
-  computed: {
-    productOptionsTypes() {
-      return [
-        ...new Set(
-          this.product.configurable_options.map((opt) => opt.attribute_code)
-        )
-      ];
-    }
-  },
-  methods: {
-    getStyleClass(attrCode, optionValIndex) {
-      return {
-        'product-config-option': true,
-        'selected-option': this.productFilters.some(
-          (f) => f.code === attrCode && f.value_index === optionValIndex
-        )
-      };
-    },
-    getStyle(optValue) {
-      return {
-        backgroundColor: optValue.toString().match(this.colorHexRegex)
-          ? optValue
-          : 'white'
-      };
-    },
-    handleSelectedConfigurations(attrCode, valIndex) {
-      const sameFilterType = this.productFilters.find(
-        (f) => f.code === attrCode
-      );
+<script setup lang="ts">
+import { computed } from 'vue';
 
-      if (sameFilterType) {
-        const filterIndex = this.productFilters.indexOf(sameFilterType);
-        this.productFilters[filterIndex].value_index = valIndex;
-      } else {
-        this.productFilters = [
-          ...this.productFilters,
-          {
-            code: attrCode,
-            value_index: valIndex
-          }
-        ];
-      }
+import type { Product } from '@/common/types.ts';
 
-      const filterVariants = this.product.variants.filter((item) => {
-        const matchFiltersCount = this.productFilters
-          .map((selFilter) => {
-            return item.attributes.some(
-              (a) =>
-                a.code === selFilter.code &&
-                a.value_index === selFilter.value_index
-            );
-          })
-          .filter(Boolean);
+const props = defineProps<{ product: Product }>();
 
-        return matchFiltersCount.length === this.productFilters.length;
-      });
+const productFilters = [];
+const colorHexRegex = /#[0-9a-f]{6}|#[0-9a-f]{3}/gi;
 
-      if (filterVariants.length) {
-        this.$emit('update-product', {
-          variant_id: filterVariants[0].product.id,
-          variant_image: filterVariants[0].product.image
-        });
-      }
-    }
-  }
-};
+const productOptionsTypes = computed(() => {
+  // return [
+  //   ...new Set(
+  //     props.product.configurable_options.map((opt) => opt.attribute_code)
+  //   )
+  // ];
+
+  return [];
+});
+
+function getStyleClass(attrCode, optionValIndex) {
+  // return {
+  //   'product-config-option': true,
+  //   'selected-option': productFilters.some(
+  //     (f) => f.code === attrCode && f.value_index === optionValIndex
+  //   )
+  // };
+}
+
+function getStyle(optValue) {
+  // return {
+  //   backgroundColor: optValue.toString().match(colorHexRegex)
+  //     ? optValue
+  //     : 'white'
+  // };
+}
+
+function handleSelectedConfigurations(attrCode, valIndex) {
+  // const sameFilterType = productFilters.find(
+  //   (f) => f.code === attrCode
+  // );
+  // if (sameFilterType) {
+  //   const filterIndex = productFilters.indexOf(sameFilterType);
+  //   productFilters[filterIndex].value_index = valIndex;
+  // } else {
+  //   productFilters = [
+  //     ...productFilters,
+  //     {
+  //       code: attrCode,
+  //       value_index: valIndex
+  //     }
+  //   ];
+  // }
+  // const filterVariants = props.product.variants.filter((item) => {
+  //   const matchFiltersCount = productFilters
+  //     .map((selFilter) => {
+  //       return item.attributes.some(
+  //         (a) =>
+  //           a.code === selFilter.code &&
+  //           a.value_index === selFilter.value_index
+  //       );
+  //     })
+  //     .filter(Boolean);
+  //   return matchFiltersCount.length === productFilters.length;
+  // });
+  // if (filterVariants.length) {
+  //   this.$emit('update-product', {
+  //     variant_id: filterVariants[0].product.id,
+  //     variant_image: filterVariants[0].product.image
+  //   });
+  // }
+}
 </script>
 
 <style scoped lang="scss">

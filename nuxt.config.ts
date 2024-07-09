@@ -3,26 +3,19 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'node-server'
   },
-  vite: {
-    vue: {
-      customElement: true,
-      template: {
-        compilerOptions: {
-          isCustomElement: (tag: string) => tag.startsWith('swiper-')
-        }
-      }
-    },
-    vueJsx: {
-      mergeProps: true
-    }
-  },
+
   runtimeConfig: {
     apiSecret: '123',
     public: {
       apiBase: '/api'
     }
   },
+  routeRules: {
+    '/': { redirect: '/catalog' }
+  },
+
   css: ['~/assets/styles/main.scss'],
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', '@nuxt/image']
+  modules: ['@nuxt/eslint', '@nuxt/image'],
+  compatibilityDate: '2024-07-09'
 });

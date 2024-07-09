@@ -1,12 +1,10 @@
 <template>
-  <NuxtLoadingIndicator />
-  <NuxtLayout class="AAAAAAa">
-    <NuxtPage />
-  </NuxtLayout>
+  <div>
+    <NuxtLoadingIndicator />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </div>
 </template>
 
-<style scoped lang="scss">
-.AAAAAAa {
-  background-color: #eb7070;
-}
-</style>
+<style scoped lang="scss"></style>
