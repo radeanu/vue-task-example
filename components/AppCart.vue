@@ -1,6 +1,6 @@
 <template>
   <div class="cart-wrapper">
-    <h3>Shopping Cart</h3>
+    <h3>Shopping ProductCart</h3>
     <small v-if="!cartProducts.length">No products found...</small>
 
     <div v-else class="cart-items">

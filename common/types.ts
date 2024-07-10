@@ -43,7 +43,7 @@ export type VariantAttribute = {
   value_index: number;
 };
 
-export type VariantProduct = {
+export type ProductVariant = {
   id: number;
   sku: string;
   image: string;
@@ -51,7 +51,7 @@ export type VariantProduct = {
 
 export type Variant = {
   attributes: VariantAttribute[];
-  product: VariantProduct[];
+  product: ProductVariant[];
 };
 
 export type Price = {
@@ -66,14 +66,28 @@ export type Brand = {
   code: string;
 };
 
-export type Product = {
+export type BaseProduct = {
   id: number;
   sku: string;
   title: string;
   image: string;
   brand: number;
   regular_price: Price;
-  type: productTypeEnum;
-  configurable_options?: ConfigurableOption[];
-  variants?: Variant[];
+};
+
+export type SimpleProduct = BaseProduct & {
+  type: productTypeEnum.simple;
+};
+
+export type ConfigurableProduct = BaseProduct & {
+  type: productTypeEnum.configurable;
+  configurable_options: ConfigurableOption[];
+  variants: Variant[];
+};
+
+export type Product = SimpleProduct | ConfigurableProduct;
+
+export type ProductCart = {
+  sku: string;
+  count: number;
 };

@@ -1,6 +1,13 @@
 <template>
   <div class="product-wrapper">
-    <img class="product-image" :src="product.image" :alt="product.title" />
+    <NuxtImg
+      class="product-image"
+      :src="productVariant.image"
+      :alt="product.title"
+      loading="lazy"
+      width="180"
+      height="180"
+    />
 
     <div class="product-content">
       <div class="product-description">
@@ -8,21 +15,15 @@
         <small>{{ brandTitle }}</small>
         <small>${{ product.regular_price.value }}</small>
 
-        <ProductConfigurations
-          v-if="product.type === 'configurable'"
-          :product="product"
-          @update-product="updateProduct"
-        />
+        <ProductConfigurations v-if="isConfigurable" :product="product" />
       </div>
-      <!--
+
       <div class="product-actions">
-        <button v-if="isInCart" class="btn btn-secondary" @click="openCart">
-          ✔
-        </button>
-        <button v-else class="btn btn-primary" @click="addProductToCart">
+        <button v-if="isInCart" class="btn btn-secondary">✔</button>
+        <button v-else class="btn btn-accent" @click="handleAddClick">
           + Add
         </button>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -32,48 +33,51 @@ import { inject, computed } from 'vue';
 
 import ProductConfigurations from './ProductConfigurations.vue';
 
-import type { Product } from '@/common/types.ts';
-import { brandsKey } from '@/common/injection-keys.ts';
+import {
+  type Product,
+  type ProductVariant,
+  productTypeEnum
+} from '@/common/types.ts';
+import { addToCart } from '@/common/services.ts';
+import { brandsKey, cartKey } from '@/common/injectionKeys.ts';
 
-const brands = inject(brandsKey, []);
+const brands = inject(brandsKey, null);
+const cartProducts = inject(cartKey, null);
 
 const props = defineProps<{ product: Product }>();
 
-const productVariant = {
-  variant_id: '',
-  variant_image: '/images/conf/default.png'
-};
-
-const brandTitle = computed(() => {
-  return brands.find((b) => b.id === props.product.brand)?.title;
+const productVariant: Ref<ProductVariant> = ref({
+  id: props.product.id,
+  image: props.product.image,
+  sku: props.product.sku
 });
 
-//       getProductImg() {
+const isConfigurable = computed(() => {
+  return props.product.type === productTypeEnum.configurable;
+});
 
-//         return require(`../assets${imagePath}`);
-//       },
+const brandTitle = computed(() => {
+  return brands?.value?.find((b) => b.id === props.product.brand)?.title;
+});
+
+const isInCart = computed(() => {
+  return cartProducts?.value?.some((p) => p.sku === productVariant.value.sku);
+});
+
+async function handleAddClick() {
+  await addToCart({
+    count: 1,
+    sku: productVariant.value.sku
+  });
+
+  window.dispatchEvent(new CustomEvent('REFRESH_CART'));
+}
+
 //       sameProductsInCarts() {
 //         return this.$store.getters['cart/GET_ITEMS'].filter(
 //           (p) => p.id === this.product.id
 //         );
 //       },
-//       isInCart() {
-//         const itemExists = this.$store.getters['cart/GET_ITEMS'].some(
-//           (p) => p.id === this.product.id
-//         );
-
-//         if (this.product.type !== 'configurable') {
-//           return itemExists;
-//         }
-
-//         if (itemExists) {
-//           return this.sameProductsInCarts.some(
-//             (p) => p.selectedVariant.variant_id === this.productVariant.variant_id
-//           );
-//         }
-
-//         return false;
-// }
 
 // addProductToCart() {
 //   this.$store.commit('cart/ADD_ITEM_TO_CART', {

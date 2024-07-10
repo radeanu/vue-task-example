@@ -28,7 +28,7 @@
 import { inject } from 'vue';
 
 import type { Brand } from '@/common/types.ts';
-import { brandsKey } from '@/common/injection-keys.ts';
+import { brandsKey } from '@/common/injectionKeys.ts';
 
 const brands: Brand[] = inject(brandsKey, []);
 </script>
