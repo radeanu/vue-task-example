@@ -18,7 +18,14 @@
 import ProductCard from './ProductCard.vue';
 import { fetchProducts } from '@/common/services.ts';
 
-const { data: products } = await useAsyncData('products', fetchProducts);
+const route = useRoute();
+
+const { data: products } = await useAsyncData(
+  route.params.code as string,
+  async () => {
+    return await fetchProducts(route.params.code as string);
+  }
+);
 </script>
 
 <style scoped lang="scss">

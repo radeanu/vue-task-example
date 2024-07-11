@@ -2,24 +2,22 @@
   <div class="menu-wrapper">
     <ul class="menu-default-type">
       <li>
-        <NuxtLink
-          to="/catalog"
-          class="menu-item-title"
-          active-class="selected-menu"
-        >
+        <NuxtLink to="/" class="menu-item-title" active-class="selected-menu">
           <span>All Brands</span>
         </NuxtLink>
       </li>
 
-      <li v-for="(brand, i) in brands" :key="'b' + i">
-        <NuxtLink
-          :to="'/catalog/' + brand.code"
-          class="menu-item-title"
-          active-class="selected-menu"
-        >
-          <span>{{ brand.title }}</span>
-        </NuxtLink>
-      </li>
+      <template v-if="brands">
+        <li v-for="(brand, i) in brands" :key="'b' + i">
+          <NuxtLink
+            :to="'/' + brand.code"
+            class="menu-item-title"
+            active-class="selected-menu"
+          >
+            <span>{{ brand.title }}</span>
+          </NuxtLink>
+        </li>
+      </template>
     </ul>
   </div>
 </template>
@@ -27,10 +25,9 @@
 <script setup lang="ts">
 import { inject } from 'vue';
 
-import type { Brand } from '@/common/types.ts';
 import { brandsKey } from '@/common/injectionKeys.ts';
 
-const brands: Brand[] = inject(brandsKey, []);
+const brands = inject(brandsKey, null);
 </script>
 
 <style scoped lang="scss">

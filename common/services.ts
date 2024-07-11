@@ -33,9 +33,10 @@ export function addToCart(item: ProductCart): Promise<void> {
   });
 }
 
-export function fetchProducts(): Promise<Product[]> {
+export function fetchProducts(code: string): Promise<Product[]> {
   return new Promise((resolve) => {
     setTimeout(() => {
+      console.log({ code });
       resolve(products as Product[]);
     }, 0);
   });

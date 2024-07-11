@@ -18,7 +18,7 @@ const { data: brands } = await useAsyncData('brands', fetchBrands);
 const { data: cart, refresh: refreshCart } = await useAsyncData(
   'cart',
   fetchCart,
-  { server: false }
+  { server: false, immediate: true }
 );
 
 provide(cartKey, cart);

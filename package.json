@@ -9,6 +9,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "deploy": "nuxt generate && sudo rm -rf /var/www/html/ && sudo cp -r .output/public /var/www/html/",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
