@@ -1,7 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   nitro: {
-    preset: 'node-server'
+    preset: 'node-server',
+    prerender: {
+      routes: ['/brand_1', '/brand_2']
+    }
   },
   css: ['~/assets/styles/main.scss'],
   app: {
