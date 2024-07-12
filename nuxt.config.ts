@@ -1,10 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   nitro: {
-    preset: 'node-server',
-    prerender: {
-      routes: ['/brand_1', '/brand_2']
-    }
+    preset: 'node-server'
   },
   css: ['~/assets/styles/main.scss'],
   app: {
@@ -17,12 +14,14 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1'
     }
   },
-  routeRules: {
-    '/**': { isr: true }
-  },
-  modules: ['@nuxt/eslint', '@nuxt/image'],
+  modules: ['@nuxt/eslint', '@nuxt/image', '@pinia/nuxt'],
   compatibilityDate: '2024-07-09',
-  generate: {
-    routes: ['/brand_1', '/brand_2']
+  routeRules: {
+    '/': { swr: 60 }
+  },
+  runtimeConfig: {
+    public: {
+      API_BASE_URL: 'http://localhost:4000'
+    }
   }
 });

@@ -7,27 +7,23 @@
         </NuxtLink>
       </li>
 
-      <template v-if="brands">
-        <li v-for="(brand, i) in brands" :key="'b' + i">
-          <NuxtLink
-            :to="'/' + brand.code"
-            class="menu-item-title"
-            active-class="selected-menu"
-          >
-            <span>{{ brand.title }}</span>
-          </NuxtLink>
-        </li>
-      </template>
+      <li v-for="(brand, i) in brands" :key="'b' + i">
+        <NuxtLink
+          :to="'/' + brand.code"
+          class="menu-item-title"
+          active-class="selected-menu"
+        >
+          <span>{{ brand.title }}</span>
+        </NuxtLink>
+      </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
+import type { Brand } from '@/common/types';
 
-import { brandsKey } from '@/common/injectionKeys.ts';
-
-const brands = inject(brandsKey, null);
+const brands = useState<Brand[]>('brands');
 </script>
 
 <style scoped lang="scss">

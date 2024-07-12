@@ -6,29 +6,14 @@
 </template>
 
 <script setup lang="ts">
-import { provide } from 'vue';
+import { fetchBrands } from '@/common/services.ts';
+import type { Brand } from '@/common/types';
 
-import { fetchBrands, fetchCart } from '@/common/services.ts';
-import { brandsKey, cartKey } from '@/common/injectionKeys.ts';
+const brands = useState<Brand[]>('brands');
 
-import AppMenu from '@/components/AppMenu.vue';
-import ProductsCatalog from '@/components/ProductsCatalog.vue';
-
-const { data: brands } = await useAsyncData('brands', fetchBrands);
-const { data: cart, refresh: refreshCart } = await useAsyncData(
-  'cart',
-  fetchCart,
-  { server: false, immediate: true }
-);
-
-provide(cartKey, cart);
-provide(brandsKey, brands);
-
-if (import.meta.client) {
-  window.addEventListener('REFRESH_CART', async () => {
-    await refreshCart();
-  });
-}
+await callOnce(async () => {
+  brands.value = await fetchBrands();
+});
 </script>
 
 <style lang="scss" scoped>

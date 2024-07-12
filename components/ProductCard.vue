@@ -41,8 +41,8 @@ import {
 import { addToCart } from '@/common/services.ts';
 import { brandsKey, cartKey } from '@/common/injectionKeys.ts';
 
-const brands = inject(brandsKey, null);
-const cartProducts = inject(cartKey, null);
+const brands = inject(brandsKey, ref([]));
+const cartProducts = inject(cartKey, ref([]));
 
 const props = defineProps<{ product: Product }>();
 
