@@ -6,14 +6,13 @@
 </template>
 
 <script setup lang="ts">
-import { fetchBrands } from '@/common/services.ts';
-import type { Brand } from '@/common/types';
+import { useBrandsState, useCartState } from '@/composables/useAppState';
 
-const brands = useState<Brand[]>('brands');
+const { fetchCart } = useCartState();
+const { fetchBrands } = useBrandsState();
 
-await callOnce(async () => {
-  brands.value = await fetchBrands();
-});
+await callOnce('cart', fetchCart);
+await callOnce('brands', fetchBrands);
 </script>
 
 <style lang="scss" scoped>

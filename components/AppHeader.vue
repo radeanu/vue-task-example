@@ -4,19 +4,21 @@
       <NuxtImg class="logo" src="/images/logo.png" alt="logo" />
     </NuxtLink>
 
-    <NuxtLink v-if="!isCartRoute" class="cart-link" to="/">
-      <span class="cart-count-badge">{{ cartItemsCount }}</span>
+    <NuxtLink class="cart-link" to="/">
+      <ClientOnly>
+        <span class="cart-count-badge">{{ cartCount }}</span>
+      </ClientOnly>
       <NuxtImg src="/images/cart-icon.png" alt="cart" height="32" />
     </NuxtLink>
   </header>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { useCartState } from '@/composables/useAppState';
 
 const route = useRoute();
 
-const cartItemsCount = useState('cartItemsCount', () => 0);
+const { cartCount } = useCartState();
 
 const isCartRoute = computed(() => route.name === 'shopping-cart');
 const headerClass = computed(() => {

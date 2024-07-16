@@ -73,6 +73,8 @@ export type BaseProduct = {
   image: string;
   brand: number;
   regular_price: Price;
+  _brand_title?: string;
+  _in_cart?: boolean;
 };
 
 export type SimpleProduct = BaseProduct & {

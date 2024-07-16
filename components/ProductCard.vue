@@ -7,19 +7,20 @@
       loading="lazy"
       width="180"
       height="180"
+      placeholder="/images/default.svg"
     />
 
     <div class="product-content">
       <div class="product-description">
         <span>{{ product.title }}</span>
-        <small>{{ brandTitle }}</small>
+        <small>{{ product._brand_title ?? '-' }}</small>
         <small>${{ product.regular_price.value }}</small>
 
         <ProductConfigurations v-if="isConfigurable" :product="product" />
       </div>
 
       <div class="product-actions">
-        <button v-if="isInCart" class="btn btn-secondary">✔</button>
+        <button v-if="product._in_cart" class="btn btn-secondary">✔</button>
         <button v-else class="btn btn-accent" @click="handleAddClick">
           + Add
         </button>
@@ -29,8 +30,6 @@
 </template>
 
 <script setup lang="ts">
-import { inject, computed } from 'vue';
-
 import ProductConfigurations from './ProductConfigurations.vue';
 
 import {
@@ -38,13 +37,12 @@ import {
   type ProductVariant,
   productTypeEnum
 } from '@/common/types.ts';
-import { addToCart } from '@/common/services.ts';
-import { brandsKey, cartKey } from '@/common/injectionKeys.ts';
-
-const brands = inject(brandsKey, ref([]));
-const cartProducts = inject(cartKey, ref([]));
+import { useCartState } from '@/composables/useAppState';
 
 const props = defineProps<{ product: Product }>();
+const cartState = useCartState();
+
+const isConfigurable = props.product.type === productTypeEnum.configurable;
 
 const productVariant: Ref<ProductVariant> = ref({
   id: props.product.id,
@@ -52,45 +50,9 @@ const productVariant: Ref<ProductVariant> = ref({
   sku: props.product.sku
 });
 
-const isConfigurable = computed(() => {
-  return props.product.type === productTypeEnum.configurable;
-});
-
-const brandTitle = computed(() => {
-  return brands?.value?.find((b) => b.id === props.product.brand)?.title;
-});
-
-const isInCart = computed(() => {
-  return cartProducts?.value?.some((p) => p.sku === productVariant.value.sku);
-});
-
 async function handleAddClick() {
-  await addToCart({
-    count: 1,
-    sku: productVariant.value.sku
-  });
-
-  window.dispatchEvent(new CustomEvent('REFRESH_CART'));
+  await cartState.addToCart({ count: 1, sku: productVariant.value.sku });
 }
-
-//       sameProductsInCarts() {
-//         return this.$store.getters['cart/GET_ITEMS'].filter(
-//           (p) => p.id === this.product.id
-//         );
-//       },
-
-// addProductToCart() {
-//   this.$store.commit('cart/ADD_ITEM_TO_CART', {
-//     id: this.product.id,
-//     selectedVariant: this.productVariant
-//   });
-// },
-// openCart() {
-//   this.$router.push({ path: '/shopping-cart' });
-// },
-// updateProduct(variant) {
-//   this.productVariant = variant;
-// }
 </script>
 
 <style scoped lang="scss">
@@ -102,6 +64,10 @@ async function handleAddClick() {
 .product-description {
   display: flex;
   flex-direction: column;
+
+  small {
+    font-size: small;
+  }
 }
 
 .product-actions {

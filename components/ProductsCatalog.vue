@@ -4,8 +4,8 @@
 
     <div v-if="products?.length" class="list-wrapper">
       <ProductCard
-        v-for="(product, i) in products"
-        :key="'pro' + i"
+        v-for="product in products"
+        :key="product.id"
         :product="product"
       />
     </div>
@@ -16,16 +16,32 @@
 
 <script setup lang="ts">
 import ProductCard from './ProductCard.vue';
-import { fetchProducts } from '@/common/services.ts';
+
+import { fetchProducts } from '@/common/services';
+import { useBrandsState, useCartState } from '@/composables/useAppState';
 
 const route = useRoute();
+const { cart } = useCartState();
+const { brands } = useBrandsState();
 
-const { data: products } = await useAsyncData(
-  route.params.code as string,
-  async () => {
-    return await fetchProducts(route.params.code as string);
-  }
-);
+//TODO add loading
+
+const { data: dbProducts } = await useLazyAsyncData('products', async () => {
+  return await fetchProducts(route.params.code as string);
+});
+
+const products = computed(() => {
+  return dbProducts.value?.map((product) => {
+    const is_in_cart = cart.value.some((c) => c.sku === product.sku);
+    const brand_title = brands.value.find((b) => b.id === product.brand)?.title;
+
+    return {
+      ...product,
+      _in_cart: is_in_cart,
+      _brand_title: brand_title
+    };
+  });
+});
 </script>
 
 <style scoped lang="scss">

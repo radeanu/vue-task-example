@@ -21,9 +21,9 @@
 </template>
 
 <script setup lang="ts">
-import type { Brand } from '@/common/types';
+import { useBrandsState } from '@/composables/useAppState';
 
-const brands = useState<Brand[]>('brands');
+const { brands } = useBrandsState();
 </script>
 
 <style scoped lang="scss">

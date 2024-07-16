@@ -52,11 +52,5 @@
     "title": "Brand 9",
     "sort": "900",
     "code": "brand_9"
-  },
-  {
-    "id": 10,
-    "title": "Brand 10",
-    "sort": "1000",
-    "code": "brand_10"
   }
 ]

@@ -16,12 +16,9 @@ export default defineNuxtConfig({
   },
   modules: ['@nuxt/eslint', '@nuxt/image', '@pinia/nuxt'],
   compatibilityDate: '2024-07-09',
-  routeRules: {
-    '/': { swr: 60 }
-  },
   runtimeConfig: {
     public: {
-      API_BASE_URL: 'http://localhost:4000'
+      API_BASE_URL: 'http://localhost:4003'
     }
   }
 });

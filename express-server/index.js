@@ -1,17 +1,30 @@
+import cors from 'cors';
 import fs from 'fs/promises';
 import express from 'express';
-import cors from 'cors';
+import bodyParser from 'body-parser';
 
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 const cart = [];
 
 app.use(cors());
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 function useRepository() {
   function getCart() {
     return cart;
+  }
+
+  function addToCart(sku, count = 1) {
+    const itemIndex = cart.findIndex((i) => i.sku === sku);
+
+    if (itemIndex === -1) {
+      return cart.push({ sku, count });
+    }
+
+    return (cart[itemIndex].count += count);
   }
 
   async function getBrands() {
@@ -39,6 +52,7 @@ function useRepository() {
 
   return {
     getCart,
+    addToCart,
     getBrands,
     getProducts
   };
@@ -47,9 +61,17 @@ function useRepository() {
 const repository = useRepository();
 
 app.get('/api/cart', (req, res) => {
+  console.log('GET CART');
   const cartItems = repository.getCart();
 
   return res.status(200).json(cartItems);
+});
+
+app.post('/api/cart', (req, res) => {
+  const { sku, count } = req.body;
+  repository.addToCart(sku, count);
+
+  return res.status(200).json({});
 });
 
 app.get('/api/brands', async (req, res) => {

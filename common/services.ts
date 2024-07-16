@@ -13,11 +13,10 @@ export function fetchCart(): Promise<ProductCart[]> {
 }
 
 export function addToCart(item: ProductCart): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, 0);
-  });
+  const config = useRuntimeConfig();
+  const baseUrl = config.public.API_BASE_URL;
+
+  return $fetch(baseUrl + '/api/cart', { method: 'POST', body: item });
 }
 
 export function fetchProducts(brand?: string): Promise<Product[]> {
