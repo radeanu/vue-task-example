@@ -16,7 +16,10 @@
         <small>{{ product._brand_title ?? '-' }}</small>
         <small>${{ product.regular_price.value }}</small>
 
-        <ProductConfigurations v-if="isConfigurable" :product="product" />
+        <ProductConfigurations
+          v-if="isConfigurable"
+          :product="product as ConfigurableProduct"
+        />
       </div>
 
       <div class="product-actions">
@@ -35,6 +38,7 @@ import ProductConfigurations from './ProductConfigurations.vue';
 import {
   type Product,
   type ProductVariant,
+  type ConfigurableProduct,
   productTypeEnum
 } from '@/common/types.ts';
 import { useCartState } from '@/composables/useAppState';
