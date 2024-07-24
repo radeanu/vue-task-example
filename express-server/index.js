@@ -1,16 +1,22 @@
 import cors from 'cors';
+import path from 'path';
 import fs from 'fs/promises';
 import express from 'express';
 import bodyParser from 'body-parser';
+import { fileURLToPath } from 'url';
 
 const app = express();
-const port = process.env.PORT || 4000;
 
+const PORT = process.env.API_PORT || 4000;
+const APP_HOST = process.env.API_HOST ?? 'localhost';
 const cart = [];
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
+const __filename = fileURLToPath(import.meta.url);
+const BASE_PATH = path.dirname(__filename);
 
 function useRepository() {
   function getCart() {
@@ -28,13 +34,15 @@ function useRepository() {
   }
 
   async function getBrands() {
-    const list = await fs.readFile('./data/brands.json', { encoding: 'utf8' });
+    const list = await fs.readFile(BASE_PATH + '/data/brands.json', {
+      encoding: 'utf8'
+    });
 
     return JSON.parse(list);
   }
 
   async function getProducts(brand_code = '') {
-    const list = await fs.readFile('./data/level3/products.json', {
+    const list = await fs.readFile(BASE_PATH + '/data/level3/products.json', {
       encoding: 'utf8'
     });
 
@@ -90,6 +98,10 @@ app.get('/api/products', async (req, res) => {
   return res.status(200).json(products);
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on  http://localhost:${port}`);
-});
+const listen_callback = () => {
+  return console.log(`🚀 App listening at http://${APP_HOST}:${PORT}`);
+};
+
+APP_HOST === 'localhost'
+  ? app.listen(PORT, listen_callback)
+  : app.listen(PORT, APP_HOST, listen_callback);
