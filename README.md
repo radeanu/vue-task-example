@@ -1,4 +1,4 @@
-# nuxt-task
+# Written 2 years ago in 1 week, checkout branch for [Nux3 migration](https://github.com/radeanu/vue-task-example/tree/vrv/nuxt3)
 
 ## Build Setup
 
