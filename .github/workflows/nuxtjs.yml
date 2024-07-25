@@ -51,7 +51,12 @@ jobs:
         with:
           node-version: '20'
           cache: ${{ steps.detect-package-manager.outputs.manager }}
-      - run: echo 'NODE_OPTIONS="--openssl-legacy-provider"' >> $GITHUB_ENV
+      - name: Set NODE_OPTIONS
+        run: |
+          # Your logic to generate NODE_OPTIONS
+          NODE_OPTIONS="--openssl-legacy-provider"
+
+          echo "NODE_OPTIONS=${NODE_OPTIONS}" >> $GITHUB_ENV
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
