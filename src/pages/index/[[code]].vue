@@ -20,5 +20,6 @@ await callOnce('brands', fetchBrands);
   overflow: hidden;
   display: grid;
   grid-template-columns: 150px 1fr;
+  gap: 10px;
 }
 </style>

@@ -19,6 +19,7 @@
         <ProductConfigurations
           v-if="isConfigurable"
           :product="product as ConfigurableProduct"
+          @update-variant="handleUpdateVariant"
         />
       </div>
 
@@ -53,6 +54,10 @@ const productVariant: Ref<ProductVariant> = ref({
   image: props.product.image,
   sku: props.product.sku
 });
+
+function handleUpdateVariant(variant: ProductVariant) {
+  productVariant.value = variant;
+}
 
 async function handleAddClick() {
   await cartState.addToCart({ count: 1, sku: productVariant.value.sku });

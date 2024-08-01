@@ -13,6 +13,8 @@ export enum configAttributeCode {
 }
 
 export type ConfigValueOption = {
+  _exists?: boolean;
+  _selected?: boolean;
   label: string;
   value_index: number;
   value: string;
@@ -51,7 +53,7 @@ export type ProductVariant = {
 
 export type Variant = {
   attributes: VariantAttribute[];
-  product: ProductVariant[];
+  product: ProductVariant;
 };
 
 export type Price = {
