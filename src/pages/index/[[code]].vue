@@ -17,7 +17,6 @@ await callOnce('brands', fetchBrands);
 
 <style lang="scss" scoped>
 .catalog-wrapper {
-  overflow: hidden;
   display: grid;
   grid-template-columns: 150px 1fr;
   gap: 10px;

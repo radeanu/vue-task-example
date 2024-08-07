@@ -27,12 +27,16 @@ const { brands } = useBrandsState();
 </script>
 
 <style scoped lang="scss">
+.menu-wrapper {
+  position: relative;
+}
 .menu-default-type {
   margin: 0;
-  margin-top: 40px;
   padding-left: 10px;
   border-right: 1px solid var(--primary-color);
   list-style: none;
+  position: sticky;
+  top: 120px;
 }
 
 .menu-item-title {

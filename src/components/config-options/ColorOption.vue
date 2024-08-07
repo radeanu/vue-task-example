@@ -1,55 +1,43 @@
 <template>
-  <ul class="config-wrapper">
-    <li
-      v-for="size in config.values"
-      :key="size.value_index"
+  <div
+    :class="{
+      'color-wrapper': true,
+      'selected-option': option._selected,
+      'disabled-option ': !option._exists
+    }"
+  >
+    <button
       :class="{
-        'size-wrapper': true,
-        'selected-option': size._selected,
-        'disabled-option ': !size._exists
+        'color-option': true,
+        'crossed-red': !option._exists
       }"
-    >
-      <button
-        :class="{
-          'size-option': true,
-          'crossed-red': !size._exists
-        }"
-        @click="handleClick(size)"
-      >
-        <span>{{ size.label }}</span>
-      </button>
-    </li>
-  </ul>
+      :style="{ backgroundColor: option.value }"
+      @click="handleClick"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
-import type { ConfigurableSizeOption, ConfigValueOption } from '~/common/types';
+import type { ConfigValueOption } from '~/common/types';
 
 interface Emits {
-  (e: 'select', option: ConfigValueOption): void;
+  (e: 'click'): void;
 }
 
 interface Props {
-  config: ConfigurableSizeOption;
+  option: ConfigValueOption;
 }
 
 const $emit = defineEmits<Emits>();
 defineProps<Props>();
 
-function handleClick(option: ConfigValueOption) {
-  $emit('select', JSON.parse(JSON.stringify(option)));
+function handleClick() {
+  $emit('click');
 }
 </script>
 
 <style scoped lang="scss">
-.config-wrapper {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 5px;
-  align-items: center;
-}
-
-.size-wrapper {
+.color-wrapper {
   width: 30px;
   height: 20px;
   border: 2px solid var(--primary-color);
@@ -60,16 +48,11 @@ function handleClick(option: ConfigValueOption) {
   }
 }
 
-.size-option {
+.color-option {
   cursor: pointer;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
+  opacity: 0.6;
 }
 
 .disabled-option {

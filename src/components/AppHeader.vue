@@ -28,6 +28,10 @@ const headerClass = computed(() => {
 
 <style scoped lang="scss">
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: white;
   display: flex;
   flex-direction: row;
   padding-block: 15px;

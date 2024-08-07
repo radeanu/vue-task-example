@@ -13,18 +13,18 @@
     <div class="product-content">
       <div class="product-description">
         <span>{{ product.title }}</span>
-        <small>{{ product._brand_title ?? '-' }}</small>
+        <small>{{ brandTitle }}</small>
         <small>${{ product.regular_price.value }}</small>
 
         <ProductConfigurations
           v-if="isConfigurable"
-          :product="product as ConfigurableProduct"
+          :product="productAsConfigurable"
           @update-variant="handleUpdateVariant"
         />
       </div>
 
       <div class="product-actions">
-        <button v-if="product._in_cart" class="btn btn-secondary">✔</button>
+        <button v-if="isInCart" class="btn btn-secondary">✔</button>
         <button v-else class="btn btn-accent" @click="handleAddClick">
           + Add
         </button>
@@ -45,14 +45,29 @@ import {
 import { useCartState } from '@/composables/useAppState';
 
 const props = defineProps<{ product: Product }>();
+
 const cartState = useCartState();
+const { brands } = useBrandsState();
 
 const isConfigurable = props.product.type === productTypeEnum.configurable;
+const productAsConfigurable = props.product as ConfigurableProduct;
 
 const productVariant: Ref<ProductVariant> = ref({
   id: props.product.id,
   image: props.product.image,
   sku: props.product.sku
+});
+
+const isInCart = computed(() => {
+  return cartState.cart.value.some(
+    (item) => item.sku === productVariant.value.sku
+  );
+});
+
+const brandTitle = computed(() => {
+  const targetBrand = brands.value.find((b) => b.id === props.product.brand);
+
+  return targetBrand?.title ?? '-';
 });
 
 function handleUpdateVariant(variant: ProductVariant) {

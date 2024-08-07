@@ -1,18 +1,24 @@
 <template>
   <div class="config-options">
-    <div v-for="(config, i) in configOptions" :key="'opt' + i">
-      <SizeConfigComp
-        v-if="config.attribute_code === configAttributeCode.size"
-        :config="config"
-        @select="onFilterSelect(config.attribute_code, $event)"
-      />
+    <ul
+      v-for="(config, i) in configOptions"
+      :key="'opt' + i"
+      class="config-wrapper"
+    >
+      <li v-for="item in config.values" :key="item.value_index">
+        <ColorOption
+          v-if="config.attribute_code === configAttributeCode.color"
+          :option="item"
+          @click="onFilterSelect(config.attribute_code, item)"
+        />
 
-      <ColorConfigComp
-        v-if="config.attribute_code === configAttributeCode.color"
-        :config="config"
-        @select="onFilterSelect(config.attribute_code, $event)"
-      />
-    </div>
+        <SizeOption
+          v-if="config.attribute_code === configAttributeCode.size"
+          :option="item"
+          @click="onFilterSelect(config.attribute_code, item)"
+        />
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -21,11 +27,12 @@ import {
   type ConfigurableProduct,
   type ConfigValueOption,
   type ProductVariant,
+  type Variant,
   configAttributeCode
 } from '@/common/types';
 
-import SizeConfigComp from './product-config/sizeConfig.vue';
-import ColorConfigComp from './product-config/colorConfig.vue';
+import ColorOption from './config-options/ColorOption.vue';
+import SizeOption from './config-options/SizeOption.vue';
 
 interface Emits {
   (e: 'updateVariant', option: ProductVariant): void;
@@ -64,13 +71,7 @@ const configOptions = computed(() => {
 
       const variantAttributes = [variant, ...selectedAttributes];
 
-      const exists = props.product.variants.some((item) => {
-        return variantAttributes.every((v) => {
-          return item.attributes.some((attr) => {
-            return attr.code === v.code && attr.value_index === v.value_index;
-          });
-        });
-      });
+      const findVariant = getVariant(props.product.variants, variantAttributes);
 
       const selected = currConfig.value.some((c) => {
         return c.code === opt.attribute_code && c.value_index === v.value_index;
@@ -78,8 +79,8 @@ const configOptions = computed(() => {
 
       return {
         ...v,
-        _exists: exists,
-        _selected: selected
+        _selected: selected,
+        _exists: findVariant !== undefined
       };
     });
 
@@ -91,13 +92,7 @@ const configOptions = computed(() => {
 });
 
 watchEffect(() => {
-  const productVariant = props.product.variants.find((v) => {
-    return currConfig.value.every((c) => {
-      return v.attributes.some((att) => {
-        return att.code === c.code && att.value_index === c.value_index;
-      });
-    });
-  });
+  const productVariant = getVariant(props.product.variants, currConfig.value);
 
   if (!productVariant) return defaultVariant;
 
@@ -107,6 +102,16 @@ watchEffect(() => {
     sku: productVariant.product.sku
   });
 });
+
+function getVariant(variants: Variant[], targetConfig: SelectedConfig[]) {
+  return variants.find((v) => {
+    return targetConfig.every((c) => {
+      return v.attributes.some((att) => {
+        return att.code === c.code && att.value_index === c.value_index;
+      });
+    });
+  });
+}
 
 function onFilterSelect(
   attribute_code: configAttributeCode,
@@ -138,5 +143,12 @@ function onFilterSelect(
   gap: 5px;
   display: flex;
   flex-direction: column;
+}
+
+.config-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 5px;
+  align-items: center;
 }
 </style>

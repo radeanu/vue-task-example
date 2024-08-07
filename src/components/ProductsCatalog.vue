@@ -2,9 +2,9 @@
   <div class="products-wrapper">
     <h3 class="title">Catalog</h3>
 
-    <div v-if="products?.length" class="list-wrapper">
+    <div v-if="dbProducts?.length" class="list-wrapper">
       <ProductCard
-        v-for="product in products"
+        v-for="product in dbProducts"
         :key="product.id"
         :product="product"
       />
@@ -18,29 +18,13 @@
 import ProductCard from './ProductCard.vue';
 
 import { fetchProducts } from '@/common/services';
-import { useBrandsState, useCartState } from '@/composables/useAppState';
 
 const route = useRoute();
-const { cart } = useCartState();
-const { brands } = useBrandsState();
 
 //TODO add loading
 
 const { data: dbProducts } = await useLazyAsyncData('products', async () => {
   return await fetchProducts(route.params.code as string);
-});
-
-const products = computed(() => {
-  return dbProducts.value?.map((product) => {
-    const is_in_cart = cart.value.some((c) => c.sku === product.sku);
-    const brand_title = brands.value.find((b) => b.id === product.brand)?.title;
-
-    return {
-      ...product,
-      _in_cart: is_in_cart,
-      _brand_title: brand_title
-    };
-  });
 });
 </script>
 
