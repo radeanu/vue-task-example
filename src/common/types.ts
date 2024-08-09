@@ -12,6 +12,12 @@ export enum configAttributeCode {
   size = 'size'
 }
 
+export type AppMenu = {
+  code: string;
+  title: string;
+  link: string;
+};
+
 export type ConfigValueOption = {
   _exists?: boolean;
   _selected?: boolean;

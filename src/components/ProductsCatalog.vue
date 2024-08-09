@@ -21,8 +21,6 @@ import { fetchProducts } from '@/common/services';
 
 const route = useRoute();
 
-//TODO add loading
-
 const { data: dbProducts } = await useLazyAsyncData('products', async () => {
   return await fetchProducts(route.params.code as string);
 });
@@ -51,11 +49,5 @@ const { data: dbProducts } = await useLazyAsyncData('products', async () => {
   padding-bottom: 10px;
   font-size: larger;
   font-weight: bold;
-}
-
-@media screen and (max-width: 740px) {
-  .list-wrapper {
-    justify-content: center;
-  }
 }
 </style>

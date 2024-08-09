@@ -1,42 +1,107 @@
 <template>
   <div class="menu-wrapper">
-    <ul class="menu-default-type">
-      <li>
-        <NuxtLink to="/" class="menu-item-title" active-class="selected-menu">
-          <span>All Brands</span>
-        </NuxtLink>
-      </li>
+    <div v-click-outside="handleClickOutside" class="menu-sticky">
+      <button class="btn btn-select" @click="toggleMenu(!displayMenu)">
+        <span> {{ displayMenu ? '↑' : '↓' }} </span>
+        <span>{{ selectedBrand.title }}</span>
+      </button>
 
-      <li v-for="(brand, i) in brands" :key="'b' + i">
-        <NuxtLink
-          :to="'/' + brand.code"
-          class="menu-item-title"
-          active-class="selected-menu"
-        >
-          <span>{{ brand.title }}</span>
-        </NuxtLink>
-      </li>
-    </ul>
+      <ul
+        :class="{
+          'menu-default-type': true,
+          'menu-hide': !displayMenu
+        }"
+      >
+        <li v-for="(brand, i) in menuBrands" :key="'b' + i">
+          <NuxtLink
+            :to="brand.link"
+            class="menu-item-title"
+            active-class="selected-menu"
+          >
+            <span>{{ brand.title }}</span>
+          </NuxtLink>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { type AppMenu } from '@/common/types';
 import { useBrandsState } from '@/composables/useAppState';
 
+const route = useRoute();
 const { brands } = useBrandsState();
+
+const displayMenu = ref(false);
+
+const defaultOption: AppMenu = {
+  code: '',
+  link: '/',
+  title: 'All Brands'
+};
+
+const selectedBrand = computed(() => {
+  const selectedCode = route.params.code;
+
+  const find = brands.value.find((m) => m.code === selectedCode);
+
+  return find ?? defaultOption;
+});
+
+const menuBrands = computed<AppMenu[]>(() => {
+  return [
+    defaultOption,
+    ...brands.value.map((b) => ({
+      code: b.code,
+      title: b.title,
+      link: '/' + b.code
+    }))
+  ];
+});
+
+function toggleMenu(value: boolean) {
+  displayMenu.value = value;
+}
+
+function handleClickOutside() {
+  if (!displayMenu.value) return;
+  toggleMenu(false);
+}
 </script>
 
 <style scoped lang="scss">
 .menu-wrapper {
-  position: relative;
+  width: 120px;
+  font-size: 14px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  height: 100%;
 }
-.menu-default-type {
-  margin: 0;
-  padding-left: 10px;
-  border-right: 1px solid var(--primary-color);
-  list-style: none;
+
+.btn-select {
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+}
+
+.menu-sticky {
   position: sticky;
-  top: 120px;
+  top: 105px;
+}
+
+.menu-hide {
+  display: none;
+}
+
+.menu-default-type {
+  padding: 10px;
+  list-style: none;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
 }
 
 .menu-item-title {
@@ -55,5 +120,36 @@ const { brands } = useBrandsState();
 .selected-menu > span {
   font-weight: bold;
   border-bottom: 1px solid var(--primary-color);
+}
+
+@media screen and (min-width: 768px) {
+  .menu-wrapper {
+    width: 150px;
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .menu-wrapper {
+    position: relative;
+    width: 100%;
+    top: 0;
+    right: 0;
+  }
+
+  .btn-select {
+    display: none;
+  }
+
+  .menu-default-type {
+    border-right: 1px solid var(--primary-color);
+    position: sticky;
+    top: 120px;
+    box-shadow: none;
+  }
+
+  .menu-hide {
+    display: block;
+  }
 }
 </style>
