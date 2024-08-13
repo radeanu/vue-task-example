@@ -44,7 +44,7 @@
 				<div class="text-center">
 					<input
 						:value="item.count"
-						class="input-count"
+						class="w-[50px] border border-primary text-center"
 						type="number"
 						min="0"
 						@input="handleCountUpdate"
@@ -56,7 +56,7 @@
 				class="flex gap-2 flex-nowrap items-center h-7 md:block md:h-auto"
 			>
 				<div class="font-bold md:hidden">Total</div>
-				<div class="text-center">
+				<div class="flex items-center justify-center">
 					<AppSpinnerLoader
 						v-if="countLoader.isLoading.value"
 						class="w-5 h-5"
@@ -236,10 +236,7 @@ async function handleDeleteClick() {
 	grid-area: b;
 }
 
-.input-count {
-	width: 50px;
-	border: 1px solid var(--primary-color);
-
+input {
 	&::-webkit-inner-spin-button,
 	&::-webkit-outer-spin-button {
 		opacity: 1;

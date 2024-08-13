@@ -4,7 +4,7 @@
 	>
 		<div
 			v-click-outside="handleClickOutside"
-			class="sticky top-[80px] z-10 md:top-[105px]"
+			class="sticky top-[70px] z-10"
 		>
 			<button
 				class="flex gap-2 flex-row w-full shadow-md cursor-pointer text-light px-2 py-1 rounded bg-primary hover:bg-primary-600 active:bg-primary-700 lg:hidden"
