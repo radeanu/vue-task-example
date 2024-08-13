@@ -1,0 +1,12 @@
+:root {
+	--page-pad-x: 4px;
+	--page-max-width: 1240px;
+
+	@media (min-width: 768px) {
+		--page-pad-x: 16px;
+	}
+
+	@media (min-width: 1920px) {
+		--page-pad-x: 32px;
+	}
+}

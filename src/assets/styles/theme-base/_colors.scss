@@ -1,0 +1,29 @@
+:root {
+	--primary-color: #2c3e50;
+	--secondary-color: #796e80;
+	--accent-color: #eb7070;
+	--light-color: #ffffff;
+}
+
+$colors: (
+	'primary': #2c3e50,
+	'secondary': #796e80,
+	'accent': #eb7070,
+	'gray': #d6d6d6
+);
+
+:root {
+	@each $name, $color in $colors {
+		@for $i from 0 through 5 {
+			@if ($i == 0) {
+				--#{$name}-50: #{tint($color, (5 - $i) * 19%)};
+			} @else {
+				--#{$name}-#{$i * 100}: #{tint($color, (5 - $i) * 19%)};
+			}
+		}
+
+		@for $i from 1 through 4 {
+			--#{$name}-#{($i + 5) * 100}: #{shade($color, $i * 15%)};
+		}
+	}
+}
