@@ -1,14 +1,28 @@
 <template>
-	<header class="header-wrapper">
-		<div class="header" :class="headerClass">
+	<header
+		class="sticky top-0 z-10 bg-light border-b border-solid border-primary"
+	>
+		<div
+			class="flex flex-row items-center mx-auto py-4 px-1 md:px-4 xl:px-8 max-w-[1240px]"
+			:class="[isCartRoute ? 'justify-center' : 'justify-between']"
+		>
 			<NuxtLink to="/">
-				<NuxtImg class="logo" src="/images/logo.png" alt="logo" />
+				<NuxtImg src="/images/logo.png" alt="logo" height="50" />
 			</NuxtLink>
 
-			<NuxtLink v-if="!isCartRoute" class="cart-link" to="/cart">
+			<NuxtLink
+				v-if="!isCartRoute"
+				class="block relative mr-5 cursor-pointer"
+				to="/cart"
+			>
 				<ClientOnly>
-					<span class="cart-count-badge">{{ cartCount }}</span>
+					<span
+						class="absolute text-center rounded-xl -top-1 left-5 px1 text-xs min-w-4 font-bold text-light bg-secondary"
+					>
+						{{ cartCount }}
+					</span>
 				</ClientOnly>
+
 				<NuxtImg src="/images/cart-icon.png" alt="cart" height="32" />
 			</NuxtLink>
 		</div>
@@ -23,61 +37,4 @@ const route = useRoute();
 const { cartCount } = useCartState();
 
 const isCartRoute = computed(() => route.name === 'cart');
-const headerClass = computed(() => {
-	return isCartRoute.value ? 'justify-center' : 'justify-between';
-});
 </script>
-
-<style scoped lang="scss">
-.header-wrapper {
-	position: sticky;
-	top: 0;
-	z-index: 9;
-	background-color: var(--light-color);
-	border-bottom: 1px solid var(--primary-color);
-}
-
-.header {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	margin-inline: auto;
-	padding-block: 16px;
-	padding-inline: var(--page-pad-x);
-	max-width: var(--page-max-width);
-}
-
-.justify-center {
-	justify-content: center;
-}
-
-.justify-between {
-	justify-content: space-between;
-}
-
-.logo {
-	height: 50px;
-}
-
-.cart-link {
-	display: block;
-	position: relative;
-	margin-right: 20px;
-	cursor: pointer;
-}
-
-.cart-count-badge {
-	top: -6px;
-	left: 20px;
-	padding: 0 5px;
-	font-size: 12px;
-	min-width: 20px;
-	line-height: 20px;
-	position: absolute;
-	text-align: center;
-	border-radius: 10px;
-	font-weight: bolder;
-	color: var(--light-color);
-	background-color: var(--accent-color);
-}
-</style>

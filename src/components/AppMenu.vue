@@ -1,24 +1,32 @@
 <template>
-	<div class="menu-wrapper">
-		<div v-click-outside="handleClickOutside" class="menu-sticky">
-			<button class="btn btn-select" @click="toggleMenu(!displayMenu)">
+	<div
+		class="w-[120px] text-sm absolute top-5 right-5 h-full md:text-base lg:relative lg:w-full lg:top-0 lg:right-0"
+	>
+		<div
+			v-click-outside="handleClickOutside"
+			class="sticky top-[80px] z-10 md:top-[105px]"
+		>
+			<button
+				class="flex gap-2 flex-row w-full shadow-md cursor-pointer text-light px-2 py-1 rounded bg-primary hover:bg-primary-600 active:bg-primary-700 lg:hidden"
+				@click="toggleMenu(!displayMenu)"
+			>
 				<span> {{ displayMenu ? '↑' : '↓' }} </span>
 				<span>{{ selectedBrand.title }}</span>
 			</button>
 
 			<ul
-				:class="{
-					'menu-default-type': true,
-					'menu-hide': !displayMenu
-				}"
+				class="p-2 bg-light shadow-md lg:border-r lg:border-r-primary lg:sticky lg:top-[120px] lg:shadow-none lg:block"
+				:class="[displayMenu ? 'block' : 'hidden']"
 			>
 				<li v-for="(brand, i) in menuBrands" :key="'b' + i">
 					<NuxtLink
 						:to="brand.link"
-						class="menu-item-title"
-						active-class="selected-menu"
+						class="cursor-pointer w-fit"
+						active-class="font-semibold border-b border-b-primary"
 					>
-						<span>{{ brand.title }}</span>
+						<span class="px-1 hover:font-semibold">
+							{{ brand.title }}
+						</span>
 					</NuxtLink>
 				</li>
 			</ul>
@@ -69,92 +77,3 @@ function handleClickOutside() {
 	toggleMenu(false);
 }
 </script>
-
-<style scoped lang="scss">
-.menu-wrapper {
-	width: 120px;
-	font-size: 14px;
-	position: absolute;
-	top: 20px;
-	right: 20px;
-	height: 100%;
-}
-
-.btn-select {
-	gap: 10px;
-	display: flex;
-	flex-direction: row;
-	width: 100%;
-	box-shadow: 0 1px 4px 0 var(--primary-color);
-}
-
-.menu-sticky {
-	position: sticky;
-	top: 80px;
-	z-index: 9;
-}
-
-.menu-hide {
-	display: none;
-}
-
-.menu-default-type {
-	padding: 10px;
-	list-style: none;
-	background-color: var(--light-color);
-	box-shadow: 0 1px 4px 0 var(--primary-color);
-}
-
-.menu-item-title {
-	cursor: pointer;
-	width: fit-content;
-
-	& > span {
-		padding-inline: 5px;
-	}
-
-	&:hover {
-		font-weight: bolder;
-	}
-}
-
-.selected-menu > span {
-	font-weight: bold;
-	border-bottom: 1px solid var(--primary-color);
-}
-
-@media screen and (min-width: 768px) {
-	.menu-sticky {
-		top: 105px;
-	}
-
-	.menu-wrapper {
-		width: 150px;
-		font-size: 18px;
-	}
-}
-
-@media screen and (min-width: 1024px) {
-	.menu-wrapper {
-		position: relative;
-		width: 100%;
-		top: 0;
-		right: 0;
-	}
-
-	.btn-select {
-		display: none;
-	}
-
-	.menu-default-type {
-		border-right: 1px solid var(--primary-color);
-		position: sticky;
-		top: 120px;
-		box-shadow: none;
-	}
-
-	.menu-hide {
-		display: block;
-	}
-}
-</style>

@@ -15,7 +15,11 @@ export default defineNuxtConfig({
 			viewport: 'width=device-width, initial-scale=1'
 		}
 	},
-	modules: ['@nuxt/eslint', '@nuxt/image', '@pinia/nuxt'],
+	modules: ['@nuxt/eslint', '@nuxt/image', '@nuxtjs/tailwindcss'],
+	tailwindcss: {
+		exposeConfig: true,
+		viewer: true
+	},
 	compatibilityDate: '2024-07-09',
 	routeRules: {
 		'/': {

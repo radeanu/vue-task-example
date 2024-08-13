@@ -1,5 +1,5 @@
 <template>
-	<div class="catalog-wrapper">
+	<div class="relative lg:grid lg:grid-cols-[150px_1fr] lg:gap-2">
 		<AppMenu />
 		<ProductsCatalog />
 	</div>
@@ -15,17 +15,3 @@ const { fetchBrands } = useBrandsState();
 await callOnce('cart', fetchCart);
 await callOnce('brands', fetchBrands);
 </script>
-
-<style lang="scss" scoped>
-.catalog-wrapper {
-	position: relative;
-}
-
-@media screen and (min-width: 1024px) {
-	.catalog-wrapper {
-		display: grid;
-		grid-template-columns: 150px 1fr;
-		gap: 10px;
-	}
-}
-</style>

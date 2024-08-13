@@ -1,9 +1,9 @@
 <template>
-	<div class="config-options">
+	<div class="flex flex-col gap-1">
 		<ul
 			v-for="(config, i) in configOptions"
 			:key="'opt' + i"
-			class="config-wrapper"
+			class="flex flex-nowrap gap-1 items-center"
 		>
 			<li v-for="item in config.values" :key="item.value_index">
 				<ColorOption
@@ -147,18 +147,3 @@ function onFilterSelect(
 	currConfig.value[confIdx].value_index = value.value_index;
 }
 </script>
-
-<style scoped lang="scss">
-.config-options {
-	gap: 5px;
-	display: flex;
-	flex-direction: column;
-}
-
-.config-wrapper {
-	display: flex;
-	flex-wrap: nowrap;
-	gap: 5px;
-	align-items: center;
-}
-</style>

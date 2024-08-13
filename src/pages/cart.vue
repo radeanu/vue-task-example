@@ -1,14 +1,17 @@
 <template>
-	<div class="cart-wrapper">
-		<h3 class="title">Shopping Cart</h3>
+	<div>
+		<h3 class="mt-5 text-lg font-bold">Shopping Cart</h3>
 
-		<div v-if="dbCartItems?.length" class="headers">
-			<div v-for="header in headers" :key="header">
+		<div
+			v-if="dbCartItems?.length"
+			class="hidden md:grid md:grid-cols-[1fr_100px_100px_100px_50px] md:gap-x-2 md:gap-y-2 md:items-center md:mt-5 md:font-bold"
+		>
+			<div v-for="header in headers" :key="header" class="text-center">
 				{{ header }}
 			</div>
 		</div>
 
-		<p v-else class="center">No products found...</p>
+		<p v-else class="text-center">No products found...</p>
 
 		<CartProduct
 			v-for="item in dbCartItems"
@@ -18,9 +21,16 @@
 			@delete="onDeleteItem"
 		/>
 
-		<div v-if="dbCartItems?.length" class="cart-checkout">
-			<p class="cart-total">Subtotal: {{ totalPrice.label }}</p>
-			<button class="btn btn-outline">Checkout</button>
+		<div
+			v-if="dbCartItems?.length"
+			class="flex flex-col gap-5 mt-2 items-end justify-end"
+		>
+			<p class="font-bold text-lg">Subtotal: {{ totalPrice.label }}</p>
+			<button
+				class="flex items-center justify-center border border-primary text-primary px-2 py-1 w-[180px] h-[35px] font-semibold shadow-button active:shadow-button-active"
+			>
+				Checkout
+			</button>
 		</div>
 	</div>
 </template>
@@ -82,64 +92,3 @@ async function onDeleteItem() {
 	await refresh();
 }
 </script>
-
-<style lang="scss" scoped>
-.title {
-	margin-top: 20px;
-	font-size: larger;
-	font-weight: bold;
-}
-
-.center {
-	text-align: center;
-}
-
-.headers {
-	display: none;
-}
-
-.cart-checkout {
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
-	margin-top: 10px;
-	align-items: flex-end;
-	justify-content: flex-end;
-
-	.cart-total {
-		font-weight: bold;
-		font-size: larger;
-	}
-
-	.btn {
-		width: 180px;
-		height: 35px;
-		text-align: center;
-		font-weight: 700;
-
-		&:hover {
-			box-shadow: 2px 2px 0px 0px var(--primary-color);
-		}
-
-		&:active {
-			box-shadow: 3px 3px 0px 0px var(--primary-color);
-		}
-	}
-}
-
-@media screen and (min-width: 768px) {
-	.headers {
-		display: grid;
-		grid-template-columns: 1fr repeat(3, 100px) 50px;
-		column-gap: 10px;
-		row-gap: 10px;
-		align-items: center;
-		margin-top: 20px;
-		font-weight: bold;
-
-		& > div {
-			text-align: center;
-		}
-	}
-}
-</style>

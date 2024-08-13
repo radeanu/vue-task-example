@@ -1,6 +1,8 @@
 <template>
-	<div class="item">
-		<div class="item-info">
+	<div
+		class="grid-template-areas grid border-b border-primary py-1 md:items-center md:gap-x-2 md:gap-y-2"
+	>
+		<div class="grid-area-a flex flex-nowrap gap-2 items-center">
 			<NuxtImg
 				class="product-image"
 				:src="variantImage"
@@ -12,11 +14,11 @@
 			/>
 
 			<div>
-				<h4 class="item-info__title">
+				<h4 class="text-lg">
 					{{ brandTitle }}/{{ item?.product?.title ?? '-' }}
 				</h4>
 
-				<ul class="item-info__attributes">
+				<ul class="mt-1 text-sm">
 					<li v-for="attr in attributes" :key="attr.label">
 						<span>{{ attr.label }}:</span>
 						<span>{{ attr.value }}</span>
@@ -25,15 +27,21 @@
 			</div>
 		</div>
 
-		<div class="price-info">
-			<div class="price-info__item">
-				<div class="label">Price</div>
-				<div class="value">{{ price.label }}</div>
+		<div
+			class="grid-area-c flex flex-col gap-1 p-2 justify-between min-h-12 xsm:flex xsm:flex-row xsm:flex-nowrap xsm:items-center md:grid md:grid-cols-[100px_100px_100px] md:gap-y-2 md:gap-x-2"
+		>
+			<div
+				class="flex gap-2 flex-nowrap items-center h-7 md:block md:h-auto"
+			>
+				<div class="font-bold md:hidden">Price</div>
+				<div class="text-center">{{ price.label }}</div>
 			</div>
 
-			<div class="price-info__item">
-				<div class="label">Qty</div>
-				<div class="value">
+			<div
+				class="flex gap-2 flex-nowrap items-center h-7 md:block md:h-auto"
+			>
+				<div class="font-bold md:hidden">Qty</div>
+				<div class="text-center">
 					<input
 						:value="item.count"
 						class="input-count"
@@ -44,30 +52,30 @@
 				</div>
 			</div>
 
-			<div class="price-info__item">
-				<div class="label">Total</div>
-				<div class="value">
+			<div
+				class="flex gap-2 flex-nowrap items-center h-7 md:block md:h-auto"
+			>
+				<div class="font-bold md:hidden">Total</div>
+				<div class="text-center">
 					<AppSpinnerLoader
 						v-if="countLoader.isLoading.value"
-						class="loader"
+						class="w-5 h-5"
 					/>
 					<span v-else>{{ total.label }}</span>
 				</div>
 			</div>
 		</div>
 
-		<div class="center delete-controller">
-			<AppSpinnerLoader
-				v-if="deleteLoader.isLoading.value"
-				class="loader"
-			/>
-
+		<div class="grid-area-b text-center">
 			<button
-				v-else
-				class="center btn delete-btn"
+				class="text-center cursor-pointer p-1 w-6 h-7 hover:h-8 hover:w-7"
 				@click="handleDeleteClick"
 			>
-				<NuxtImg src="/images/delete-icon.png" alt="delete" />
+				<AppSpinnerLoader
+					v-if="deleteLoader.isLoading.value"
+					class="w-5 h-5"
+				/>
+				<NuxtImg v-else src="/images/delete-icon.png" alt="delete" />
 			</button>
 		</div>
 	</div>
@@ -209,88 +217,23 @@ async function handleDeleteClick() {
 </script>
 
 <style lang="scss" scoped>
-.item {
-	padding-block: 5px;
-	border-bottom: 1px solid var(--primary-color);
-	display: grid;
+.grid-template-areas {
 	grid-template-areas:
 		'a a a a a a a b'
 		'a a a a a a a b'
 		'c c c c c c c c';
 }
 
-.item-info {
+.grid-area-a {
 	grid-area: a;
-	display: flex;
-	flex-wrap: nowrap;
-	gap: 10px;
-	align-items: center;
-
-	&__title {
-		font-size: large;
-	}
-
-	&__attributes {
-		margin-top: 5px;
-		font-size: small;
-	}
 }
 
-.price-info {
+.grid-area-c {
 	grid-area: c;
-	display: flex;
-	flex-direction: column;
-	gap: 5px;
-	padding: 10px;
-	justify-content: space-between;
-	min-height: 50px;
-
-	&__item {
-		display: flex;
-		gap: 10px;
-		flex-wrap: nowrap;
-		align-items: center;
-		height: 30px;
-
-		.label {
-			font-weight: bold;
-		}
-
-		.value {
-			text-align: center;
-		}
-	}
 }
 
-.delete-controller {
+.grid-area-b {
 	grid-area: b;
-}
-
-.center {
-	text-align: center;
-}
-
-.loader {
-	width: 20px;
-	height: 20px;
-}
-
-.delete-btn {
-	background: transparent;
-	width: 25px;
-	height: 28px;
-	padding: 0;
-	--image-size: 18px;
-
-	img {
-		width: var(--image-size);
-		max-width: var(--image-size);
-		min-width: var(--image-size);
-	}
-
-	&:active {
-		--image-size: 20px;
-	}
 }
 
 .input-count {
@@ -303,43 +246,16 @@ async function handleDeleteClick() {
 	}
 }
 
-@media screen and (min-width: 425px) {
-	.price-info {
-		flex-direction: row;
-		flex-wrap: nowrap;
-		align-items: center;
-	}
-}
-
 @media screen and (min-width: 768px) {
-	.item {
+	.grid-template-areas {
 		grid-template-areas: none;
 		grid-template-columns: 1fr auto 50px;
-		align-items: center;
 	}
 
-	.item-info,
-	.price-info,
-	.delete-controller {
+	.grid-area-a,
+	.grid-area-c,
+	.grid-area-b {
 		grid-area: auto;
-	}
-
-	.price-info {
-		display: grid;
-		grid-template-columns: repeat(3, 100px);
-
-		&__item {
-			display: block;
-			height: auto;
-
-			.label {
-				display: none;
-			}
-
-			.value {
-				text-align: center;
-			}
-		}
 	}
 }
 </style>

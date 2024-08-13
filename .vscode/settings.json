@@ -15,5 +15,7 @@
 		"commandCenter.border": "#e7e7e799"
 	},
 	"peacock.color": "#6f1f52",
-	"eslint.experimental.useFlatConfig": true
+	"files.associations": {
+		"*.scss": "tailwindcss"
+	}
 }
