@@ -1,3 +1,5 @@
+## Tailwind version - [vrv/tailwind-setup](https://github.com/radeanu/vue-task-example/tree/vrv/tailwind-setup)
+
 # Nuxt 3
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
