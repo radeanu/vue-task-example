@@ -1,19 +1,3 @@
-## Migrate app from Nuxt2 `master` - branch to Nuxt3 - current branch.
-
-# TODO:
-
-- [x] Config `Nuxt3` app, styles, `express-server`
-- [x] Catalog page
-  - [x] Add to cart
-  - [ ] Add to cart with variant
-- [x] Product card
-  - [x] Display variants
-  - [ ] Variant filter
-- [x] Menu
-  - [ ] Responsive UI
-- [ ] Cart page
-  - [ ] Edit cart
-
 # Nuxt 3
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
