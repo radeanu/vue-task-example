@@ -21,7 +21,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                sh 'rm -rf /var/www/html/{*,.*}'
+                sh 'cp -r .output /var/www/html'
             }
         }
     }
