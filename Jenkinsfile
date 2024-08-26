@@ -6,6 +6,7 @@ pipeline {
             steps {
                 sh 'node -v'
                 sh 'npm -v'
+                sh 'whoami'
             }
         }
         stage('Build') {
@@ -21,8 +22,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'rm -rf /var/www/html/{*,.*}'
-                sh 'cp -r .output /var/www/html'
+                sh 'sudo rm -rf /var/www/html/{*,.*}'
+                sh 'sudo cp -r .output /var/www/html'
             }
         }
     }
