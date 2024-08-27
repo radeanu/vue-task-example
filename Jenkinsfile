@@ -2,13 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Information') {
-            steps {
-                sh 'node -v'
-                sh 'npm -v'
-                sh 'whoami'
-            }
-        }
         stage('Build') {
             steps {
                 sh 'docker compose up --build --no-start'
