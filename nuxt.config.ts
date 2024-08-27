@@ -24,7 +24,8 @@ export default defineNuxtConfig({
 	routeRules: {
 		'/': {
 			redirect: '/catalog'
-		}
+		},
+		'/api/**': { cors: true },
 	},
 	runtimeConfig: {
 		public: {

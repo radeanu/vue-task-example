@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'npm install'
+                sh 'docker'
                 sh 'npm run build'
             }
         }
@@ -26,8 +26,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'sudo rm -rf /var/www/html/{*,.*}'
-                sh 'sudo cp -r .output /var/www/html'
+                sh 'rm -rf /var/www/html/{*,.*}'
+                sh 'cp -r .output /var/www/html'
             }
         }
     }
