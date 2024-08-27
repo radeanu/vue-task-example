@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Information') {
             steps {
-                sh 'docker compose version'
+                sh 'sudo docker compose version'
             }
         }
         stage('Build') {
