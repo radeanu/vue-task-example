@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'NodeJS'
-    }
-
     stages {
         stage('Information') {
             steps {
@@ -15,8 +11,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker'
-                sh 'npm run build'
+                sh 'docker compose up --build --no-start'
+                sh 'docker save nuxt_app > nuxt_app.tar'
             }
         }
         stage('Test') {
@@ -26,8 +22,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'rm -rf /var/www/html/{*,.*}'
-                sh 'cp -r .output /var/www/html'
+                sh 'scp nuxt_app.tar 192.168.1.89:/home/neo/containers/'
             }
         }
     }
